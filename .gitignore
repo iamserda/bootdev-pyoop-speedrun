@@ -4,3 +4,4 @@ books/*
 frankenstein.txt
 *.pyc
 __pycache__
+scratch.py
