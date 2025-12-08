@@ -1,0 +1,6 @@
+.DS_Store
+books
+books/*
+frankenstein.txt
+*.pyc
+__pycache__
