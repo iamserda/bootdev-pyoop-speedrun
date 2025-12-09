@@ -9,35 +9,37 @@
 #
 # Rewrite the function above, make it DRY
 #
-def compute_soldier_dps(damage, attacks_per_second):
-    if not isinstance(damage, int):
+def compute_soldier_dps(soldier: dict)->int:
+    damage = soldier["damage"]
+    attacks_per_second = soldier["attacks_per_second"]
+
+    if isinstance(damage, bool) or not isinstance(damage, int):
         raise TypeError("damage must be an integer.")
     
-    if not isinstance(attacks_per_second, int):
+    if isinstance(damage, bool) or not isinstance(attacks_per_second, int):
         raise TypeError("attacks_per_second must be an integer.")
     
     if damage < 0:
         raise ValueError("damage must be 0 or more")
     
     if attacks_per_second < 0:
-        raise TypeError("attacks_per_second must be 0 or more.")
+        raise ValueError("attacks_per_second must be 0 or more.")
     
     return damage * attacks_per_second
 
 
-def fight_soldiers(soldier_one, soldier_two):
+def fight_soldiers(soldier_one:dict, soldier_two:dict)->str:
     if not isinstance(soldier_two, dict) or not isinstance(soldier_one, dict):
-        raise TypeError("Soldier should be an object of class <'dict'>")
+        raise TypeError("solder_one and soldier_two args must be 'dict' objects.")
 
-    if not soldier_one or not soldier_two:
-        raise ValueError("Missing soldier damage, attack per second info!")
+    if not soldier_one:
+        raise ValueError("soldier_one 'dict' is empty!")
+    
+    if not soldier_two:
+        raise ValueError("soldier_two 'dict' is empty!")
 
-    soldier_one_dps = compute_soldier_dps(
-        soldier_one["damage"], soldier_one["attacks_per_second"]
-    )
-    soldier_two_dps = compute_soldier_dps(
-        soldier_two["damage"], soldier_two["attacks_per_second"]
-    )
+    soldier_one_dps = compute_soldier_dps(soldier_one)
+    soldier_two_dps = compute_soldier_dps(soldier_two)
 
     if soldier_one_dps > soldier_two_dps:
         return "soldier 1 wins"
@@ -64,9 +66,9 @@ if __name__ == "__main__":
     try:
         s1 = None
         s2 = None
-        isinstance(fight_soldiers(soldier_one=s1, soldier_two=s2), int)
+        isinstance(fight_soldiers(soldier_one=s1, soldier_two=s2), TypeError)
     except TypeError as err:
-        print(err)
+        print(f"TypeError: {err}.")
         pass
 
     try:
@@ -74,20 +76,20 @@ if __name__ == "__main__":
         s2 = {}
         assert isinstance(fight_soldiers(soldier_one=s1, soldier_two=s2), ValueError)
     except ValueError as err:
-        print(err)
+        print(f"ValueError: {err}")
         pass
 
     try:
         s1 = {"damage": None, "attacks_per_second": None}
         s2 = {"damage": None, "attacks_per_second": None}
-        assert isinstance(fight_soldiers(soldier_one=s1, soldier_two=s2), ValueError)
+        assert isinstance(fight_soldiers(soldier_one=s1, soldier_two=s2), TypeError)
     except TypeError as err:
-        print(err)
+        print(f"TypeError: {err}.")
         pass
     try:
         s1 = {"damage": -6, "attacks_per_second": 2}
         s2 = {"damage": -15, "attacks_per_second": 2}
         assert isinstance(fight_soldiers(soldier_one=s1, soldier_two=s2))
     except ValueError as err:
-        print(err)
+        print(f"ValueError: {err}.")
         pass
