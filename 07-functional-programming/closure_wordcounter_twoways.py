@@ -26,5 +26,5 @@ def word_count_aggregator1():
     return word_finder
 
 sentence = 'A closure is a function that references variables from outside its own function body.'
-print(f"recursive-closure: {word_count_aggregator()(sentence)}")
-print(f"basic-closure: {word_count_aggregator1()(sentence)}")
+assert word_count_aggregator()(sentence) == 14
+assert word_count_aggregator1()(sentence) == 14
